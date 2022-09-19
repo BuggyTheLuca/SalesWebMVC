@@ -17,7 +17,7 @@ namespace SalesWeb.Controllers
 
         public IActionResult About()
         {
-            ViewData["Message"] = "Your application description page.";
+            ViewData["Message"] = "Sales web mvc app.";
 
             return View();
         }
@@ -31,6 +31,7 @@ namespace SalesWeb.Controllers
 
         public IActionResult Privacy()
         {
+            ViewData["Text"] = "Testando os bagulhete";
             return View();
         }
 
