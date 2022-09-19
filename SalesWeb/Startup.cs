@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using SalesWeb.Models;
+using SalesWeb.Data;
 
 namespace SalesWeb
 {
@@ -36,25 +37,20 @@ namespace SalesWeb
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            try
-            {
-                services.AddDbContext<SalesWebContext>(
-                    options => options.UseMySql(Configuration.GetConnectionString("SalesWebContext"),
-                    builder => builder.MigrationsAssembly("SalesWeb"))
-            );
-            }catch(Exception e)
-            {
-                Console.WriteLine("O erro ta aqui: ");
-            }
-            
+            services.AddDbContext<SalesWebContext>(
+                options => options.UseMySql(Configuration.GetConnectionString("SalesWebContext"),
+                builder => builder.MigrationsAssembly("SalesWeb")));
+
+            services.AddScoped<SeedingService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, SeedingService seeding)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                seeding.Seed();
             }
             else
             {
