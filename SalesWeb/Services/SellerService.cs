@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using SalesWeb.Models;
 using SalesWeb.Data;
 
@@ -18,7 +18,7 @@ namespace SalesWeb.Services
 
         public List<Seller> FindAll()
         {
-            return _context.Seller.ToList();
+            return _context.Seller.Include(seller => seller.Department).ToList();
         }
 
         public void Insert(Seller seller)
@@ -29,7 +29,7 @@ namespace SalesWeb.Services
 
         public Seller FindById(int id)
         {
-            return _context.Seller.FirstOrDefault(seller => seller.Id == id);
+            return _context.Seller.Include(seller => seller.Department).FirstOrDefault(seller => seller.Id == id);
         }
 
         public void Remove(int id)
